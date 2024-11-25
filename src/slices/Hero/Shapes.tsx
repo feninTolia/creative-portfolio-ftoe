@@ -29,6 +29,7 @@ interface IGeometries {
 
 interface IGeometryProps extends IGeometries {
   materials: Material[];
+  soundEffects: HTMLAudioElement[];
 }
 
 const Shapes = () => {
@@ -100,11 +101,18 @@ function Geometries() {
     }),
   ];
 
+  const soundEffects = [
+    new Audio('/sounds/knock1.ogg'),
+    new Audio('/sounds/knock2.ogg'),
+    new Audio('/sounds/knock3.ogg'),
+  ];
+
   //pass to Geometry
   return geometries.map(({ position, r, geometry }) => (
     <Geometry
       key={JSON.stringify(position)}
       materials={materials}
+      soundEffects={soundEffects}
       position={position.map((p) => p * 2) as Position}
       r={r}
       geometry={geometry}
@@ -112,7 +120,13 @@ function Geometries() {
   ));
 }
 
-function Geometry({ materials, r, position, geometry }: IGeometryProps) {
+function Geometry({
+  materials,
+  r,
+  position,
+  geometry,
+  soundEffects,
+}: IGeometryProps) {
   const meshRef = useRef<Group>(null);
   const [visible, setVisible] = useState(false);
 
@@ -122,6 +136,7 @@ function Geometry({ materials, r, position, geometry }: IGeometryProps) {
 
   function handleClick(e: ThreeEvent<MouseEvent>) {
     const mesh = e.object;
+    gsap.utils.random(soundEffects).play();
 
     gsap.to(mesh.rotation, {
       x: `+=${gsap.utils.random(0, 2)}`,
