@@ -82,7 +82,6 @@ const TextList = ({ slice }: TextListProps): JSX.Element => {
           ))}
         </div>
       ))}
-      <div className="h-72"></div>
     </section>
   );
 };

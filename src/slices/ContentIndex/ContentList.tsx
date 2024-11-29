@@ -30,7 +30,7 @@ export const ContentList = ({
   const [currentItem, setCurrentItem] = useState<null | number>(null);
   const [isHovering, setIsHovering] = useState(false);
 
-  const urlPrefix = contentType === 'Blog' ? '/blog' : '/project';
+  const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects';
 
   useGSAP(() => {
     gsap.to(component.current, { opacity: 1 });
