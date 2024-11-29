@@ -10,6 +10,9 @@ import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa6';
 export default async function Footer() {
   const client = createClient();
   const settings = await client.getSingle('settings');
+
+  console.log(settings.data);
+
   return (
     <Bounded as="footer" className="text-slate-600">
       <div className="container mx-auto mt-20 flex flex-col items-center justify-between gap-6 py-8 sm:flex-row ">
@@ -57,7 +60,7 @@ export default async function Footer() {
           </ul>
         </nav>
         <div className="socials inline-flex justify-center sm:justify-end">
-          {isFilled.link(settings.data.github_link) && (
+          {isFilled.keyText(settings.data.github_link.text) && (
             <PrismicNextLink
               field={settings.data.github_link}
               className="p-2 text-2xl text-slate-300 transition-all duration-150 hover:scale-125 hover:text-yellow-400"
@@ -66,7 +69,7 @@ export default async function Footer() {
               <FaGithub />
             </PrismicNextLink>
           )}
-          {isFilled.link(settings.data.twitter_link) && (
+          {isFilled.keyText(settings.data.twitter_link.text) && (
             <PrismicNextLink
               field={settings.data.twitter_link}
               className="p-2 text-2xl text-slate-300 transition-all duration-150 hover:scale-125 hover:text-yellow-400"
@@ -75,7 +78,7 @@ export default async function Footer() {
               <FaTwitter />
             </PrismicNextLink>
           )}
-          {isFilled.link(settings.data.linkedin_link) && (
+          {isFilled.keyText(settings.data.linkedin_link.text) && (
             <PrismicNextLink
               field={settings.data.linkedin_link}
               className="p-2 text-2xl text-slate-300 transition-all duration-150 hover:scale-125 hover:text-yellow-400"
