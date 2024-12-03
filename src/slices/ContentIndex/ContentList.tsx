@@ -1,10 +1,11 @@
 'use client';
 import { useGSAP } from '@gsap/react';
-import { asImageSrc, Content, isFilled } from '@prismicio/client';
+import { Content, ImageField, isFilled } from '@prismicio/client';
+import { PrismicNextImage } from '@prismicio/next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import Link from 'next/link';
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { MdArrowOutward } from 'react-icons/md';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -58,76 +59,86 @@ export const ContentList = ({
     });
   }, []);
 
-  useGSAP(
-    () => {
-      if (currentItem === null) {
-        return;
-      }
+  useGSAP(() => {
+    if (currentItem === null) {
+      return;
+    }
 
-      const handleMouseMove = (e: MouseEvent) => {
-        const mousePos = { x: e.clientX, y: e.clientY + window.scrollY };
-        const speed = Math.sqrt(
-          Math.pow(mousePos.x - lastMousePos.current.x, 2)
-        );
+    const handleMouseMove = (e: MouseEvent) => {
+      const mousePos = { x: e.clientX, y: e.clientY + window.scrollY };
+      // const speed = Math.sqrt(Math.pow(mousePos.x - lastMousePos.current.x, 2));
 
-        const maxY = window.scrollY + window.innerHeight - 350;
-        const maxX = window.innerWidth - 250;
+      // const maxY = window.scrollY + window.innerHeight - 350;
+      // const maxX = window.innerWidth - 250;
 
-        gsap.to(revealRef.current, {
-          x: gsap.utils.clamp(0, maxX, mousePos.x - 110),
-          y: gsap.utils.clamp(0, maxY, mousePos.y - 160),
-          rotation: speed * (mousePos.x > lastMousePos.current.x ? 1 : -1),
-          ease: 'back.out(2)',
-          duration: 1.3,
-        });
+      // with image
+      // gsap.to(revealRef.current, {
+      //   x: gsap.utils.clamp(0, maxX, mousePos.x - 110),
+      //   y: gsap.utils.clamp(0, maxY, mousePos.y - 160),
+      //   rotation: speed * (mousePos.x > lastMousePos.current.x ? 1 : -1),
+      //   ease: 'back.out(2)',
+      //   duration: 1.3,
+      // });
 
-        gsap.to(revealRef.current, {
-          opacity: isHovering ? 1 : 0,
-          visibility: 'visible',
-          ease: 'power3.out',
-          duration: 0.4,
-        });
-        lastMousePos.current = mousePos;
-      };
+      //without cursor
+      gsap.to(revealRef.current, {
+        x: mousePos.x - 45,
+        y: mousePos.y - 55,
+        duration: 0,
+      });
 
-      window.addEventListener('mousemove', handleMouseMove);
-      return () => {
-        window.removeEventListener('mousemove', handleMouseMove);
-      };
-    },
-    { dependencies: [currentItem, isHovering] }
-  );
+      lastMousePos.current = mousePos;
+    };
 
-  const contentImages = items.map((item) => {
-    const image = isFilled.image(item.data.hover_image)
-      ? item.data.hover_image
-      : fallbackItemImage;
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [currentItem]);
 
-    return asImageSrc(image, { fit: 'crop', w: 220, h: 320, exp: -10 });
-  });
+  useGSAP(() => {
+    gsap.to(revealRef.current, {
+      opacity: isHovering ? 1 : 0,
+      visibility: 'visible',
+      ease: 'power3.out',
+      duration: 0.4,
+      scale: isHovering ? 1 : 0.2,
+    });
+  }, [isHovering]);
+
+  // const contentImages = items.map((item) => {
+  //   const image = isFilled.image(item.data.cover_image)
+  //     ? item.data.cover_image
+  //     : fallbackItemImage;
+
+  //   return asImageSrc(image, { fit: 'crop', w: 220, h: 320, exp: -10 });
+  // });
+
+  const contentImage = (coverImage: ImageField<never>) =>
+    isFilled.image(coverImage) ? coverImage : fallbackItemImage;
 
   const onMouseEnter = (index: number) => {
     setCurrentItem(index);
     if (!isHovering) setIsHovering(true);
   };
   const onMouseLeave = () => {
-    setIsHovering(false);
     setCurrentItem(null);
+    setIsHovering(false);
   };
 
   // Preload images
-  useEffect(() => {
-    contentImages.forEach((url) => {
-      if (!url) return;
-      const img = new Image();
-      img.src = url;
-    });
-  }, [contentImages]);
+  // useEffect(() => {
+  //   contentImages.forEach((url) => {
+  //     if (!url) return;
+  //     const img = new Image();
+  //     img.src = url;
+  //   });
+  // }, [contentImages]);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <ul
-        className="grid border-b border-b-slate-100 opacity-0"
+        className="grid border-b border-b-slate-100 opacity-0 "
         onMouseLeave={onMouseLeave}
         ref={component}
       >
@@ -144,7 +155,7 @@ export const ContentList = ({
               >
                 <Link
                   href={`${urlPrefix}/${item.uid}`}
-                  className="flex flex-col justify-between border-t border-t-slate-100 py-10 text-slate-200 md:flex-row"
+                  className="cursor-none flex flex-col justify-between border-t border-t-slate-100 py-10 text-slate-200 md:flex-row"
                   aria-label={item.data.title}
                 >
                   <div className="flex flex-col">
@@ -157,10 +168,17 @@ export const ContentList = ({
                       ))}
                     </div>
                   </div>
-                  <span className="ml-auto flex items-center gap-2 text-xl font-medium md:ml-0">
-                    {viewMoreText}
-                    <MdArrowOutward />
-                  </span>
+                  <div className="flex gap-8">
+                    <PrismicNextImage
+                      field={contentImage(item.data.cover_image)}
+                      imgixParams={{ fit: 'crop', w: 220, h: 120 }}
+                      className="h-20 w-32 object-cover rounded-lg"
+                    />
+                    <span className="ml-auto flex items-center gap-2 text-xl font-medium md:ml-0">
+                      {viewMoreText}
+                      <MdArrowOutward />
+                    </span>
+                  </div>
                 </Link>
               </li>
             )}
@@ -169,14 +187,25 @@ export const ContentList = ({
       </ul>
 
       {/* Hover element */}
-      <div
-        className="hover-reveal pointer-events-none absolute left-0 top-0 -z-10 h-[320px] w-[220px] rounded-lg bg-cover bg-center opacity-0 transition-[background] duration-300"
+      {/* with image */}
+      {/* <div
+        className="hover-reveal pointer-events-none absolute 
+        left-0 top-0 -z-10 h-[320px] w-[220px] rounded-lg bg-cover bg-center opacity-0 transition-[background] duration-300
+        bg-white"
         style={{
           backgroundImage:
             currentItem !== null ? `url(${contentImages[currentItem]})` : '',
         }}
         ref={revealRef}
-      ></div>
+      ></div> */}
+
+      {/* without cursor */}
+      <div
+        className="hover-reveal pointer-events-none absolute left-0 top-0 z-10 h-24 w-24 rounded-full bg-cover bg-center opacity-0 transition-[background] duration-300 bg-white text-sky-950 font-medium flex items-center justify-center "
+        ref={revealRef}
+      >
+        Explore
+      </div>
     </div>
   );
 };

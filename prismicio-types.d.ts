@@ -33,15 +33,15 @@ interface BlogPostDocumentData {
   date: prismic.DateField;
 
   /**
-   * Hover Image field in *Blog Post*
+   * Cover Image field in *Blog Post*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: blog_post.hover_image
+   * - **API ID Path**: blog_post.cover_image
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#image
    */
-  hover_image: prismic.ImageField<never>;
+  cover_image: prismic.ImageField<never>;
 
   /**
    * Slice Zone field in *Blog Post*
@@ -261,15 +261,15 @@ interface ProjectDocumentData {
   date: prismic.DateField;
 
   /**
-   * Hover Image field in *Project*
+   * Cover Image field in *Project*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
-   * - **API ID Path**: project.hover_image
+   * - **API ID Path**: project.cover_image
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#image
    */
-  hover_image: prismic.ImageField<never>;
+  cover_image: prismic.ImageField<never>;
 
   /**
    * Slice Zone field in *Project*
@@ -621,7 +621,7 @@ export interface ContentIndexSliceDefaultPrimary {
   view_more_text: prismic.KeyTextField;
 
   /**
-   * Fallback Item Image field in *ContentIndex → Default → Primary*
+   * fallback item image field in *ContentIndex → Default → Primary*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*

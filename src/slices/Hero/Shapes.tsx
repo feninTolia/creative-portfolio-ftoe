@@ -16,7 +16,6 @@ import {
   PolyhedronGeometry,
   TorusGeometry,
 } from 'three';
-import { Perf } from 'r3f-perf';
 
 gsap.registerPlugin(useGSAP);
 
@@ -53,7 +52,6 @@ const Shapes = () => {
           />
           <Environment preset="studio" />
         </Suspense>
-        <Perf />
       </Canvas>
     </div>
   );

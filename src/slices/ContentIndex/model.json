@@ -49,7 +49,7 @@
         "fallback_item_image": {
           "type": "Image",
           "config": {
-            "label": "Fallback Item Image",
+            "label": "fallback item image",
             "constraint": {},
             "thumbnails": []
           }
