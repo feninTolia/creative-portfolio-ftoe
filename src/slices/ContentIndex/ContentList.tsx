@@ -65,6 +65,8 @@ export const ContentList = ({
     }
 
     const handleMouseMove = (e: MouseEvent) => {
+      console.log(window.scrollY);
+
       const mousePos = { x: e.clientX, y: e.clientY + window.scrollY };
       // const speed = Math.sqrt(Math.pow(mousePos.x - lastMousePos.current.x, 2));
 
@@ -81,6 +83,7 @@ export const ContentList = ({
       // });
 
       //without cursor
+
       gsap.to(revealRef.current, {
         x: mousePos.x - 45,
         y: mousePos.y - 55,
@@ -138,7 +141,7 @@ export const ContentList = ({
   return (
     <div className="overflow-hidden">
       <ul
-        className="grid border-b border-b-slate-100 opacity-0 "
+        className="grid border-b border-b-slate-100 opacity-0 overflow-hidden"
         onMouseLeave={onMouseLeave}
         ref={component}
       >

@@ -24,9 +24,11 @@ export const Avatar = ({ image, className }: Props) => {
       if (!component.current) return;
       const componentRect = component.current.getBoundingClientRect();
       const componentCenterX = componentRect.left + componentRect.width / 2;
+      const componentCenterY = componentRect.top + componentRect.height / 2;
 
       const componentPercent = {
         x: (e.clientX - componentCenterX) / componentRect.width / 2,
+        y: (e.clientY - componentCenterY) / componentRect.height / 2,
       };
 
       const distFromCenter = 1 - Math.abs(componentPercent.x);
@@ -39,6 +41,8 @@ export const Avatar = ({ image, className }: Props) => {
           '.avatar',
           {
             rotation: gsap.utils.clamp(-2, 2, 5 * componentPercent.x),
+            x: gsap.utils.clamp(-20, 20, 50 * componentPercent.x),
+            y: gsap.utils.clamp(-20, 20, 50 * componentPercent.y),
             duration: 0.5,
           },
           0
