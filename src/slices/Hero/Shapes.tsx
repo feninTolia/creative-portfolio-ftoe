@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { ContactShadows, Environment, Float } from '@react-three/drei';
 import { Canvas, ThreeEvent } from '@react-three/fiber';
 import gsap from 'gsap';
-import { Suspense, useRef, useState } from 'react';
+import { memo, Suspense, useRef, useState } from 'react';
 import {
   CapsuleGeometry,
   DodecahedronGeometry,
@@ -31,7 +31,7 @@ interface IGeometryProps extends IGeometries {
   soundEffects: HTMLAudioElement[];
 }
 
-const Shapes = () => {
+const Shapes = memo(() => {
   return (
     <div className="row-span-1 row-start-1 -mt-9 aspect-square md:col-span-1 md:col-start-2 md:mt-0">
       <Canvas
@@ -55,8 +55,8 @@ const Shapes = () => {
       </Canvas>
     </div>
   );
-};
-
+});
+Shapes.displayName = 'Shapes';
 export default Shapes;
 
 function Geometries() {

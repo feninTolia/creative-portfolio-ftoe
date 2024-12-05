@@ -6,12 +6,13 @@ import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import gsap from 'gsap';
 import Shapes from './Shapes';
+import { memo } from 'react';
 
 gsap.registerPlugin(useGSAP);
 
 export type HeroProps = SliceComponentProps<Content.HeroSlice>;
 
-const Hero = ({ slice }: HeroProps): JSX.Element => {
+const Hero = memo(({ slice }: HeroProps): JSX.Element => {
   useGSAP(() => {
     const tl = gsap.timeline();
 
@@ -66,6 +67,8 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       </div>
     </Bounded>
   );
-};
+});
 
 export default Hero;
+
+Hero.displayName = 'Hero';
