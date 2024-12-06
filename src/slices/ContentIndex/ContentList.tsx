@@ -35,14 +35,6 @@ export const ContentList = memo(
 
     const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects';
 
-    // const sortedItems = items.sort((a, b) => {
-    //   if (!a.data.date || !b.data.date) {
-    //     return 1000;
-    //   }
-
-    //   return asDate(b.data.date).getTime() - asDate(a.data.date).getTime();
-    // });
-
     useGSAP(() => {
       gsap.to(component.current, { opacity: 1 });
 
@@ -78,7 +70,6 @@ export const ContentList = memo(
         x: mousePos.x - 45,
         y: mousePos.y - 55,
         duration: 0.1,
-        // ease: 'power3.out',
       });
     }, [mousePos]);
 
