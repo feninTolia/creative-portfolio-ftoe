@@ -3,14 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { asDate, Content, isFilled } from '@prismicio/client';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import {
-  Fragment,
-  memo,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { ListItem } from './ListItem';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -29,9 +22,11 @@ export const ContentList = memo(
     fallbackItemImage,
     viewMoreText = 'Read More',
   }: Props) => {
+    console.log('rerender');
+
     const component = useRef(null);
     const revealRef = useRef(null);
-    const itemsRef = useRef<Array<HTMLLIElement | null>>([]);
+    const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
 
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [scrollDelta, setScrollDelta] = useState(0);
@@ -41,7 +36,9 @@ export const ContentList = memo(
     const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects';
 
     const sortedItems = items.sort((a, b) => {
-      if (!a.data.date || !b.data.date) return Date.now();
+      if (!a.data.date || !b.data.date) {
+        return 1000;
+      }
 
       return asDate(b.data.date).getTime() - asDate(a.data.date).getTime();
     });
@@ -73,10 +70,12 @@ export const ContentList = memo(
     }, []);
 
     useGSAP(() => {
-      if (!revealRef.current) return;
+      if (!revealRef.current) {
+        return;
+      }
 
       gsap.to(revealRef.current, {
-        x: mousePos.x - 45, // Center offset
+        x: mousePos.x - 45,
         y: mousePos.y - 55,
         duration: 0.1,
         // ease: 'power3.out',
@@ -88,7 +87,7 @@ export const ContentList = memo(
       const handleMouseMove = (e: MouseEvent) => {
         setMousePos({
           x: e.clientX,
-          y: e.clientY + window.scrollY, // Include current scroll offset
+          y: e.clientY + window.scrollY,
         });
       };
 
@@ -130,7 +129,9 @@ export const ContentList = memo(
     }, [isHovering]);
 
     const onMouseEnter = useCallback(() => {
-      if (!isHovering) setIsHovering(true);
+      if (!isHovering) {
+        setIsHovering(true);
+      }
     }, [isHovering]);
 
     const onMouseLeave = useCallback(() => {
@@ -146,9 +147,9 @@ export const ContentList = memo(
           ref={component}
         >
           {sortedItems.map((item, index) => (
-            <Fragment key={item.uid}>
-              {isFilled.keyText(item.data.title) && (
-                <li
+            <li key={index}>
+              {isFilled.keyText(item.data.title) ? (
+                <div
                   key={item.uid}
                   className=" list-item opacity-0"
                   ref={(el) => {
@@ -161,9 +162,11 @@ export const ContentList = memo(
                     viewMoreText={viewMoreText}
                     fallbackItemImage={fallbackItemImage}
                   />
-                </li>
+                </div>
+              ) : (
+                <div></div>
               )}
-            </Fragment>
+            </li>
           ))}
         </ul>
 
