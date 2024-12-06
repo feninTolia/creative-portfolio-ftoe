@@ -1,6 +1,6 @@
 'use client';
 import { useGSAP } from '@gsap/react';
-import { asDate, Content, isFilled } from '@prismicio/client';
+import { Content, isFilled } from '@prismicio/client';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
@@ -35,13 +35,13 @@ export const ContentList = memo(
 
     const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects';
 
-    const sortedItems = items.sort((a, b) => {
-      if (!a.data.date || !b.data.date) {
-        return 1000;
-      }
+    // const sortedItems = items.sort((a, b) => {
+    //   if (!a.data.date || !b.data.date) {
+    //     return 1000;
+    //   }
 
-      return asDate(b.data.date).getTime() - asDate(a.data.date).getTime();
-    });
+    //   return asDate(b.data.date).getTime() - asDate(a.data.date).getTime();
+    // });
 
     useGSAP(() => {
       gsap.to(component.current, { opacity: 1 });
@@ -146,7 +146,7 @@ export const ContentList = memo(
           onMouseEnter={() => onMouseEnter()}
           ref={component}
         >
-          {sortedItems.map((item, index) => (
+          {items.map((item, index) => (
             <li key={index}>
               {isFilled.keyText(item.data.title) ? (
                 <div
