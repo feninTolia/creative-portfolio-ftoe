@@ -35,31 +35,31 @@ export const ContentList = memo(
 
     const urlPrefix = contentType === 'Blog' ? '/blog' : '/projects';
 
-    useGSAP(() => {
-      gsap.to(component.current, { opacity: 1 });
+    // useGSAP(() => {
+    //   gsap.to(component.current, { opacity: 1 });
 
-      itemsRef.current.forEach((item) => {
-        gsap.fromTo(
-          item,
-          {
-            opacity: 0,
-            y: 20,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.3,
-            ease: 'elastic.out(1,0.3)',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top bottom-=100px',
-              end: 'bottom center',
-              toggleActions: 'play none none none',
-            },
-          }
-        );
-      });
-    }, []);
+    //   // itemsRef.current.forEach((item) => {
+    //   //   gsap.fromTo(
+    //   //     item,
+    //   //     {
+    //   //       opacity: 0,
+    //   //       y: 20,
+    //   //     },
+    //   //     {
+    //   //       opacity: 1,
+    //   //       y: 0,
+    //   //       duration: 0.4,
+    //   //       ease: 'power1.inOut',
+    //   //       scrollTrigger: {
+    //   //         trigger: item,
+    //   //         start: 'top bottom-=100px',
+    //   //         end: 'bottom center',
+    //   //         toggleActions: 'play none none none',
+    //   //       },
+    //   //     }
+    //   //   );
+    //   // });
+    // }, []);
 
     useGSAP(() => {
       if (!revealRef.current) {
@@ -130,9 +130,9 @@ export const ContentList = memo(
     }, []);
 
     return (
-      <div className="overflow-hidden">
+      <div className="overflow-hidden cursor-none">
         <ul
-          className="grid border-b border-b-slate-100 opacity-0 overflow-hidden"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6  opacity-100 overflow-hidden"
           onMouseLeave={onMouseLeave}
           onMouseEnter={() => onMouseEnter()}
           ref={component}
@@ -142,7 +142,7 @@ export const ContentList = memo(
               {isFilled.keyText(item.data.title) ? (
                 <div
                   key={item.uid}
-                  className=" list-item opacity-0"
+                  className="list-item opacity-100 h-full"
                   ref={(el) => {
                     itemsRef.current[index] = el;
                   }}

@@ -23,24 +23,25 @@ export const ListItem = memo(
     return (
       <Link
         href={`${urlPrefix}/${item.uid}`}
-        className="cursor-none flex flex-col justify-between border-t border-t-slate-100 py-10 text-slate-200 md:flex-row"
-        // aria-label={item.data.title}
+        className="cursor-none flex flex-col gap-8 justify-between border border-slate-600 px-4 py-8
+         text-slate-200 h-full rounded-md hover:backdrop-blur-lg backdrop-brightness-[135%] backdrop-blur-2xl hover:backdrop-brightness-[150%]
+         transition-all hover:shadow-2xl group"
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-4">
           <span className="text-3xl font-bold">{item.data.title}</span>
-          <div className="flex gap-3 text-yellow-400 text-lg font-bold">
+          <div className="flex flex-wrap gap-2 text-yellow-400 text-md font-bold">
             {item.tags.map((tag, idx) => (
               <span key={tag + idx}>{tag}</span>
             ))}
           </div>
         </div>
-        <div className="flex gap-8">
+        <div className="flex flex-col gap-8">
           <PrismicNextImage
             field={contentImage(item.data.cover_image)}
             imgixParams={{ fit: 'crop', w: 220, h: 120 }}
-            className="h-20 w-32 object-cover rounded-lg"
+            className=" object-cover rounded-lg"
           />
-          <span className="ml-auto flex items-center gap-2 text-xl font-medium md:ml-0">
+          <span className="ml-auto flex items-center gap-2 text-xl group-hover:text-white group-hover:scale-[102%] origin-left transition-all font-medium md:ml-0">
             {viewMoreText}
             <MdArrowOutward />
           </span>
